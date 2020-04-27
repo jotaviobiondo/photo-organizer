@@ -1,12 +1,12 @@
-use std::fs::{DirEntry, File};
+mod files;
+
+use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 use chrono::{DateTime, TimeZone, Utc};
 use exif::{Field, Tag, Value};
 use structopt::StructOpt;
-
-const IMAGE_EXTENSIONS: [&str; 3] = ["jpg", "jpeg", "png"];
 
 #[derive(Debug, StructOpt)]
 #[structopt(
@@ -33,28 +33,6 @@ fn dir_validator(dir_str: String) -> Result<(), String> {
     } else {
         Ok(())
     }
-}
-
-fn find_image_files_from_current_dir(dir: &PathBuf) -> Result<Vec<PathBuf>, String> {
-    dir.read_dir()
-        .map(|files| {
-            files
-                .flatten()
-                .map(|entry: DirEntry| entry.path())
-                .filter(|path| path.is_file())
-                .filter(is_image)
-                .collect()
-        })
-        .map_err(|err| err.to_string())
-}
-
-fn is_image(path: &PathBuf) -> bool {
-    path.extension()
-        .map(|extension| extension.to_str())
-        .flatten()
-        .map(|extension| extension.to_lowercase())
-        .filter(|extension| IMAGE_EXTENSIONS.contains(&extension.as_str()))
-        .is_some()
 }
 
 fn get_photo_date_time(path: &PathBuf) -> Option<DateTime<Utc>> {
@@ -100,7 +78,7 @@ fn get_file_last_modified_datetime(path: &PathBuf) -> Option<DateTime<Utc>> {
 fn main() {
     let args: Cli = Cli::from_args();
 
-    let files = find_image_files_from_current_dir(&args.dir).unwrap();
+    let files = files::get_images(&args.dir).unwrap();
 
     println!("Files:");
     for entry in &files {
