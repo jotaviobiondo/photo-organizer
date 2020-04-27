@@ -6,3 +6,5 @@ edition = "2018"
 
 [dependencies]
 structopt = "0.3.13"
+kamadak-exif = "0.5.1"
+chrono = "0.4.11"
