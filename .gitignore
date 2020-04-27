@@ -1,0 +1,8 @@
+/target
+.idea
+*.iml
+TODO.md
+*.jpg
+*.jpeg
+*.png
+*.tiff

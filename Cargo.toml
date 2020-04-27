@@ -1,0 +1,8 @@
+[package]
+name = "photo-organizer"
+version = "0.1.0"
+authors = ["João Otávio Biondo"]
+edition = "2018"
+
+[dependencies]
+structopt = "0.3.13"
