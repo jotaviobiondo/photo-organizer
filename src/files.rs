@@ -24,3 +24,27 @@ fn is_image(path: &PathBuf) -> bool {
         .filter(|extension| IMAGE_EXTENSIONS.contains(&extension.as_str()))
         .is_some()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_image() {
+        assert_eq!(is_image(&PathBuf::from("test.png")), true);
+        assert_eq!(is_image(&PathBuf::from("test.PNG")), true);
+        assert_eq!(is_image(&PathBuf::from("test.jpeg")), true);
+        assert_eq!(is_image(&PathBuf::from("test.JPEG")), true);
+        assert_eq!(is_image(&PathBuf::from("test.jpg")), true);
+        assert_eq!(is_image(&PathBuf::from("test.JPG")), true);
+        assert_eq!(is_image(&PathBuf::from("test.TIFF")), true);
+        assert_eq!(is_image(&PathBuf::from("test.TIFF")), true);
+        assert_eq!(is_image(&PathBuf::from("")), false);
+        assert_eq!(is_image(&PathBuf::from("test.txt")), false);
+        assert_eq!(is_image(&PathBuf::from("test")), false);
+        assert_eq!(is_image(&PathBuf::from("png")), false);
+        assert_eq!(is_image(&PathBuf::from("jpeg")), false);
+        assert_eq!(is_image(&PathBuf::from("jpg")), false);
+        assert_eq!(is_image(&PathBuf::from("tiff")), false);
+    }
+}
