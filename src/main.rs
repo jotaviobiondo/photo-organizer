@@ -6,7 +6,7 @@ use chrono::{DateTime, TimeZone, Utc};
 use exif::{Field, Tag, Value};
 use structopt::StructOpt;
 
-const IMAGE_EXTENSIONS: [&'static str; 3] = ["jpg", "jpeg", "png"];
+const IMAGE_EXTENSIONS: [&str; 3] = ["jpg", "jpeg", "png"];
 
 #[derive(Debug, StructOpt)]
 #[structopt(
@@ -58,7 +58,7 @@ fn is_image(path: &PathBuf) -> bool {
 }
 
 fn get_photo_date_time(path: &PathBuf) -> Option<DateTime<Utc>> {
-    get_exif_date_time_original(path).or(get_file_last_modified_datetime(path))
+    get_exif_date_time_original(path).or_else(|| get_file_last_modified_datetime(path))
 }
 
 fn get_exif_date_time_original(path: &PathBuf) -> Option<DateTime<Utc>> {
@@ -94,7 +94,7 @@ fn get_file_last_modified_datetime(path: &PathBuf) -> Option<DateTime<Utc>> {
         .ok()
         .map(|metadata| metadata.modified().ok())
         .flatten()
-        .map(|time_modified| DateTime::from(time_modified))
+        .map(DateTime::from)
 }
 
 fn main() {
