@@ -1,4 +1,5 @@
 mod files;
+mod organizer;
 mod photo;
 
 use std::path::{Path, PathBuf};
